@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Air Canary</string>
-    <string name="hello_world">Hello air!</string>
+    <string name="hello_world">Air Canary!</string>
     <string name="menu_settings">Settings</string>
 
 </resources>
