@@ -7,12 +7,12 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="34dp"
         android:gravity="center_horizontal"
-        android:text="Salt Lake City" />
+        android:text="@string/novalue" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,24 +20,54 @@
         android:gravity="center"
         android:orientation="vertical" >
 
+	    <LinearLayout
+	        android:layout_width="150dp"
+	        android:layout_height="150dp"
+	        android:layout_gravity="center"
+	        android:background="#ff0000"
+	        android:gravity="center"
+	        android:orientation="vertical" >
+            
+	        <TextView
+	            android:id="@+id/CurrentPm"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/novalue"
+	            android:textColor="#ffffff"
+	            android:textSize="50sp" />
+        
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/CurrentPm"
-            android:layout_width="wrap_content"
+            android:id="@+id/Observed"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:background="#ff0000"
-            android:gravity="center"
-            android:height="200dp"
-            android:text="@string/initial_ppm"
-            android:textColor="#ffffff"
-            android:textSize="50sp"
-            android:width="200dp" />
+            android:gravity="center_horizontal"
+            android:text="@string/novalue"
+            android:textSize="10sp" />
+
     </LinearLayout>
 
+     <ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1">
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:orientation="vertical">
+      
     <TableLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/SiteTable"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp" >
+        android:layout_margin="10dp"
+        android:layout_marginTop="23dp"
+        android:layout_weight="0.15"
+        android:background="#000000"
+        android:scrollbarAlwaysDrawVerticalTrack="false" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -63,5 +93,7 @@
             android:layout_height="wrap_content" >
         </TableRow>
     </TableLayout>
+    
+    </LinearLayout></ScrollView>
 
 </LinearLayout>

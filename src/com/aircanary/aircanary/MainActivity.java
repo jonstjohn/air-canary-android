@@ -1,5 +1,8 @@
 package com.aircanary.aircanary;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +10,11 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.AsyncTask;
@@ -15,6 +23,11 @@ import android.util.Log;
 
 public class MainActivity extends Activity
 {
+	
+    /**
+     * Site data
+     */
+    ArrayList<HashMap<String,String>> siteData = new ArrayList<HashMap<String,String>>();
 	
     /**
      * Context
@@ -29,15 +42,26 @@ public class MainActivity extends Activity
         
         mContext = this;
         
-        reload();
+        //reloadFeatured();
+        //reloadSites();
         
     }
     
-    private void reload()
+    private void reloadFeatured()
     {
         TextView tv = (TextView) findViewById(R.id.CurrentPm);
         tv.setText("--");
-        new GetJsonTask().execute("slc");
+        new GetFeaturedJsonTask().execute("slc");
+    }
+    
+    private void reloadSites()
+    {
+
+    	TableLayout tl = (TableLayout) findViewById(R.id.SiteTable);
+    	//tl.removeViews(1, tl.getChildCount() - 1);
+    	//tl.getChildCount();
+    	tl.removeAllViews();
+        new GetSitesJsonTask().execute("all");
     }
 
     @Override
@@ -53,14 +77,14 @@ public class MainActivity extends Activity
     {
         super.onResume();
         
-        // If tempUnit has changed, refresh
-        reload();
+        reloadFeatured();
+        reloadSites();
     }
     
     /**
      * Asynchronous get JSON task
      */
-    private class GetJsonTask extends AsyncTask<String, Void, String> {
+    private class GetFeaturedJsonTask extends AsyncTask<String, Void, String> {
         
         /**
          * Execute in background
@@ -78,67 +102,150 @@ public class MainActivity extends Activity
         protected void onPostExecute(String result)
         {
         	Log.w("AC", result);
-            loadData(result);
+            loadFeatured(result);
         }
     }
     
     /**
      * Load data from JSON string result
      */
-    public void loadData(String result) {
+    public void loadFeatured(String result) {
+    
+        try {
+          
+            // Convert result into JSONArray
+        	JSONObject resultObject = new JSONObject(result);
+        	
+        	TextView tvLocation = (TextView) findViewById(R.id.Location);
+        	tvLocation.setText(resultObject.getString("name"));
+        	
+            JSONArray featuredData = resultObject.getJSONArray("data");
+            
+            JSONObject sampleObject = featuredData.getJSONObject(0);
+            
+            TextView tvCurrentPm = (TextView) findViewById(R.id.CurrentPm);
+            tvCurrentPm.setText(sampleObject.getString("pm25"));
+            
+            TextView tvObserved = (TextView) findViewById(R.id.Observed);
+            tvObserved.setText(sampleObject.getString("observed"));
+          
+        } catch (JSONException e) {
+          
+        	Log.w("AC", e.getMessage());
+        	Toast.makeText(mContext, "An error occurred while retrieving area data", Toast.LENGTH_SHORT).show();
+          
+        }
+    
+    }
+    
+    /**
+     * Asynchronous get JSON task
+     */
+    private class GetSitesJsonTask extends AsyncTask<String, Void, String> {
+        
+        /**
+         * Execute in background
+         */
+        protected String doInBackground(String... args) {
+            
+              AcApi api = new AcApi(mContext);
+              return api.getJson(args[0]);
+
+        }
+        
+        /**
+         * After execute (in UI thread context)
+         */
+        protected void onPostExecute(String result)
+        {
+        	Log.w("AC", result);
+            loadSites(result);
+        }
+    }
+    
+    /**
+     * Load data from JSON string result
+     */
+    public void loadSites(String result) {
     
         try {
           
             // Convert result into JSONArray
             JSONArray json = new JSONArray(result);
           
+            TableLayout siteTable = (TableLayout) findViewById(R.id.SiteTable);
+            siteTable.removeAllViews();
+            
+            TableRow siteHeaderRow = (TableRow) View.inflate(mContext, R.layout.site_header_row, null);
+            siteTable.addView(siteHeaderRow);
+            
             // Loop over JSONarray
             for (int i = 0; i < json.length(); i++) {
             
                 // Get JSONObject from current array element
-                JSONObject sampleObject = json.getJSONObject(i);
+                JSONObject siteObject = json.getJSONObject(i);
                 
-                String pm25 = sampleObject.getString("pm25");
-                TextView tv = (TextView) findViewById(R.id.CurrentPm);
-                tv.setText(pm25);
-                //tv.setBackgroundColor(color);
+                String code = siteObject.getString("code");
+                String name = siteObject.getString("name");
                 
-                /*
-                // Add state to hashmap
-                HashMap<String, String> map = new HashMap<String,String>();
-                map.put("areaId", areaId);
-                map.put("name", name);
-                areaList.add(map);
-                */
+                JSONArray airData = siteObject.getJSONArray("data");
+                String pm25 = airData.getJSONObject(0).getString("pm25");
+                String ozone = airData.getJSONObject(0).getString("ozone");
+                
+                Log.w("AC", code);
+                
+                TableRow siteRow = (TableRow) View.inflate(mContext, R.layout.site_row, null);
+                TextView tv = (TextView) siteRow.findViewById(R.id.name);
+                tv.setText(name);
+                
+                TextView tv2 = (TextView) siteRow.findViewById(R.id.pm25);
+                tv2.setText(pm25);
+                
+                TextView tvOzone = (TextView) siteRow.findViewById(R.id.Ozone);
+                tvOzone.setText(ozone);
+                
+                siteTable.addView(siteRow);
+                
             }
           
         } catch (JSONException e) {
           
+        	Log.w("AC", e.getMessage());
         	Toast.makeText(mContext, "An error occurred while retrieving area data", Toast.LENGTH_SHORT).show();
           
         }
     
-        /*
         // Create simple adapter using hashmap
+        /*
         SimpleAdapter areas = new SimpleAdapter(
             this,
-            areaList,
-            R.layout.list_row,
+            siteData,
+            R.layout.site_row,
             new String[] { "name"},
             new int[] { R.id.name }
         );
+        */
+        /*
+        TableLayout siteTable = (TableLayout) findViewById(R.id.SiteTable);
+        siteTable.removeAllViews();
+        
+        TableRow siteRow = (TableRow) View.inflate(mContext, R.layout.site_row, null);
+        
+        siteTable.addView(siteRow);
+        */
+        
       
-      setListAdapter(areas);
+        //setListAdapter(areas);
     
-      ListView lv = getListView();
-      lv.setTextFilterEnabled(true);
+      //ListView lv = getListView();
+      //lv.setTextFilterEnabled(true);
       
       // Populate empty row in case we didn't find any areas
-      emptyView.setText(noneText);
+      //emptyView.setText(noneText);
       
       // Set on item click listener for states
-      lv.setOnItemClickListener(new OnItemClickListener() {
-      */
+      //lv.setOnItemClickListener(new OnItemClickListener() {
+      
           /**
            * On item click action, open area activity
            */
