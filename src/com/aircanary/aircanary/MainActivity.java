@@ -8,11 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,20 +41,45 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_site_grid);
         
         mContext = this;
+        //SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
+        //        android.R.layout.simple_spinner_dropdown_item);
         
         //reloadFeatured();
         //reloadSites();
         
+        //ActionBar actionBar = getActionBar();
+        
+        //ActionBar.OnNavigationListener mOnNavigationListener = new ActionBar.OnNavigationListener() {
+        	  // Get the same strings provided for the drop-down's ArrayAdapter
+        	  //String[] strings = getResources().getStringArray(R.array.action_list);
+
+        	  //@Override
+        	  //public boolean onNavigationItemSelected(int position, long itemId) {
+        		  /*
+        	    // Create new fragment from our own Fragment class
+        	    ListContentFragment newFragment = new ListContentFragment();
+        	    FragmentTransaction ft = openFragmentTransaction();
+        	    // Replace whatever is in the fragment container with this fragment
+        	    //  and give the fragment a tag name equal to the string at the position selected
+        	    ft.replace(R.id.fragment_container, newFragment, strings[position]);
+        	    // Apply changes
+        	    ft.commit();
+        	    */
+        	    //return true;
+        	    
+        	  //}
+        	//};
+        
     }
     
-    private void reloadFeatured()
+    private void reloadCurrent()
     {
-        TextView tv = (TextView) findViewById(R.id.CurrentPm);
-        tv.setText("--");
-        new GetFeaturedJsonTask().execute("slc");
+        //TextView tv = (TextView) findViewById(R.id.CurrentPm);
+        //tv.setText("--");
+        new GetCurrentJsonTask().execute("slc");
     }
     
     private void reloadSites()
@@ -77,14 +105,14 @@ public class MainActivity extends Activity
     {
         super.onResume();
         
-        reloadFeatured();
-        reloadSites();
+        reloadCurrent();
+        //reloadSites();
     }
     
     /**
      * Asynchronous get JSON task
      */
-    private class GetFeaturedJsonTask extends AsyncTask<String, Void, String> {
+    private class GetCurrentJsonTask extends AsyncTask<String, Void, String> {
         
         /**
          * Execute in background
@@ -102,31 +130,44 @@ public class MainActivity extends Activity
         protected void onPostExecute(String result)
         {
         	Log.w("AC", result);
-            loadFeatured(result);
+            loadCurrent(result);
         }
     }
     
     /**
      * Load data from JSON string result
      */
-    public void loadFeatured(String result) {
+    public void loadCurrent(String result) {
     
         try {
           
             // Convert result into JSONArray
         	JSONObject resultObject = new JSONObject(result);
         	
-        	TextView tvLocation = (TextView) findViewById(R.id.Location);
-        	tvLocation.setText(resultObject.getString("name"));
+        	//TextView tvLocation = (TextView) findViewById(R.id.Location);
+        	//tvLocation.setText(resultObject.getString("name"));
         	
             JSONArray featuredData = resultObject.getJSONArray("data");
             
             JSONObject sampleObject = featuredData.getJSONObject(0);
             
-            TextView tvCurrentPm = (TextView) findViewById(R.id.CurrentPm);
+            TextView tvCurrentPm = (TextView) findViewById(R.id.PmValue);
             tvCurrentPm.setText(sampleObject.getString("pm25"));
             
-            TextView tvObserved = (TextView) findViewById(R.id.Observed);
+            TextView tvCurrentOzone = (TextView) findViewById(R.id.OzValue);
+            tvCurrentOzone.setText(sampleObject.getString("ozone"));
+            
+            TextView tvCurrentTemp = (TextView) findViewById(R.id.TempValue);
+            String temperature = sampleObject.getString("temperature");
+            if (temperature.equalsIgnoreCase("None")) {
+            	temperature = "n/a";
+            }
+            tvCurrentTemp.setText(temperature);
+            
+            TextView tvCurrentWind = (TextView) findViewById(R.id.WindValue);
+            tvCurrentWind.setText(sampleObject.getString("wind_speed"));
+            
+            TextView tvObserved = (TextView) findViewById(R.id.ObservedValue);
             tvObserved.setText(sampleObject.getString("observed"));
           
         } catch (JSONException e) {
