@@ -14,7 +14,7 @@
     <string name="wind_label">Wind</string>
     <string name="wind_unit">mph</string>
     <string name="temp_label">Temp</string>
-    <string name="temp_unit">\u00B0</string>
+    <string name="temp_unit">\u00B0 F</string>
     <string name="observed_label">Last updated</string>
 	<string name="today_label">Today</string>
 	<string name="tomorrow_label">Tomorrow</string>

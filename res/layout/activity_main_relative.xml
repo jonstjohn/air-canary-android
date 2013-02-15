@@ -1,103 +1,275 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/CurrentContainer"
+    android:id="@+id/Container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_marginTop="20dp"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/PmOzContainer"
+        android:id="@+id/CurrentContainer"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
-        <RelativeLayout
-            android:id="@+id/RelativeLayout1"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/PmOzContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/PmValue"
+                    style="@style/CurrentValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/PmLabel"
+                    android:layout_below="@+id/PmLabel"
+                    android:minWidth="100dp"
+                    android:text="@string/novalue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/PmUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/PmValue"
+                    android:layout_below="@+id/PmValue"
+                    android:text="@string/pm_unit" />
+
+                <TextView
+                    android:id="@+id/PmLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/pm_label" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    android:id="@+id/OzValue"
+                    style="@style/CurrentValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/OzoneLabel"
+                    android:minWidth="100dp"
+                    android:text="@string/novalue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/OzoneUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/OzValue"
+                    android:layout_below="@+id/OzValue"
+                    android:text="@string/ozone_unit" />
+
+                <TextView
+                    android:id="@+id/OzoneLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight=".5"
+                    android:text="@string/ozone_label" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TempWindContainer"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:layout_marginTop="25dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/PmValue"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/PmLabel"
-                android:layout_below="@+id/PmLabel"
-                android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal" >
 
-            <TextView
-                android:id="@+id/PmUnit"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/TempLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/temp_label" />
+
+                <TextView
+                    android:id="@+id/TempValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/TempLabel"
+                    android:layout_below="@+id/TempLabel"
+                    android:minWidth="50dp"
+                    android:text="@string/novalue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/TempUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/TempValue"
+                    android:layout_below="@+id/TempValue"
+                    android:text="@string/temp_unit" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/PmValue"
-                android:layout_below="@+id/PmValue"
-                android:text="TextView" />
+                android:layout_weight="1"
+                android:gravity="center_horizontal" >
 
-            <TextView
-                android:id="@+id/PmLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="TextView" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/WindLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/wind_label" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" >
+                <TextView
+                    android:id="@+id/WindValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/WindLabel"
+                    android:layout_below="@+id/WindLabel"
+                    android:minWidth="50dp"
+                    android:text="@string/novalue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/OzoneValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/OzoneLabel"
-                android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/OzoneUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/OzoneValue"
-                android:layout_below="@+id/OzoneValue"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/OzoneLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_weight=".5"
-                android:text="TextView" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/WindUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/WindValue"
+                    android:layout_below="@+id/WindValue"
+                    android:text="@string/wind_unit" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/TempWindContainer"
+        android:id="@+id/ForecastContainer"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" >
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" >
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
+        <LinearLayout
+            android:id="@+id/TodayForecastContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/TodayLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="TextView" />
+                android:text="@string/today_label" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/TodayValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ff99cc00"
+                android:minHeight="100dp"
+                android:minWidth="100dp"
+                android:text="@string/novalue"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TomorrowForecastContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/TomorrowLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tomorrow_label" />
+
+            <TextView
+                android:id="@+id/TomorrowValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ffffbb33"
+                android:minHeight="100dp"
+                android:minWidth="100dp"
+                android:text="@string/novalue"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DatForecastContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/DatLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dat_label" />
+
+            <TextView
+                android:id="@+id/DatValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ffff4444"
+                android:minHeight="100dp"
+                android:minWidth="100dp"
+                android:text="@string/dat_label"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/ObservedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/observed_label"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/ObservedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/novalue"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
