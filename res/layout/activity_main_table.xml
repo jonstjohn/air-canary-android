@@ -229,11 +229,14 @@
                 android:id="@+id/TodayValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ff99cc00"
+                android:background="#eeeeee"
                 android:minHeight="100dp"
                 android:minWidth="100dp"
+                android:padding="8dp"
                 android:text="@string/novalue"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -255,11 +258,14 @@
                 android:id="@+id/TomorrowValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ffffbb33"
+                android:background="#eeeeee"
                 android:minHeight="100dp"
                 android:minWidth="100dp"
+                android:padding="8dp"
                 android:text="@string/novalue"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -279,11 +285,14 @@
                 android:id="@+id/DatValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ffff4444"
+                android:background="#eeeeee"
                 android:minHeight="100dp"
                 android:minWidth="100dp"
+                android:padding="8dp"
                 android:text="@string/dat_label"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+
         </LinearLayout>
     </LinearLayout>
 

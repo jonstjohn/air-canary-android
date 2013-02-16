@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.AsyncTask;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 public class MainActivity extends Activity
@@ -82,6 +83,11 @@ public class MainActivity extends Activity
         new GetCurrentJsonTask().execute("slc");
     }
     
+    private void reloadForecast()
+    {
+    	new GetForecastJsonTask().execute("forecast/slc");
+    }
+    
     private void reloadSites()
     {
 
@@ -106,6 +112,7 @@ public class MainActivity extends Activity
         super.onResume();
         
         reloadCurrent();
+        reloadForecast();
         //reloadSites();
     }
     
@@ -177,6 +184,79 @@ public class MainActivity extends Activity
           
         }
     
+    }
+    
+    /**
+     * Asynchronous get JSON task
+     */
+    private class GetForecastJsonTask extends AsyncTask<String, Void, String> {
+        
+        /**
+         * Execute in background
+         */
+        protected String doInBackground(String... args) {
+            
+              AcApi api = new AcApi(mContext);
+              return api.getJson(args[0]);
+
+        }
+        
+        /**
+         * After execute (in UI thread context)
+         */
+        protected void onPostExecute(String result)
+        {
+        	Log.w("AC", result);
+            loadForecast(result);
+        }
+    }
+    
+    /**
+     * Load data from JSON string result
+     */
+    public void loadForecast(String result) {
+    
+        try {
+          
+            // Convert result into JSONArray
+        	JSONArray resultArray = new JSONArray(result);
+        	
+        	Log.w("AC", result);
+        	
+        	JSONObject todayData = resultArray.getJSONObject(0);
+        	JSONObject tomorrowData = resultArray.getJSONObject(1);
+        	JSONObject datData = resultArray.getJSONObject(2);
+        	
+        	TextView todayView = (TextView) findViewById(R.id.TodayValue);
+        	todayView.setText(todayData.getString("description"));
+        	todayView.setBackgroundColor(textToColor(todayData.getString("color")));
+        	
+        	TextView tomorrowView = (TextView) findViewById(R.id.TomorrowValue);
+        	tomorrowView.setText(tomorrowData.getString("description"));
+        	tomorrowView.setBackgroundColor(textToColor(tomorrowData.getString("color")));
+        	
+        	TextView datView = (TextView) findViewById(R.id.DatValue);
+        	datView.setText(datData.getString("description"));
+        	datView.setBackgroundColor(textToColor(datData.getString("color")));
+          
+        } catch (JSONException e) {
+          
+        	Log.w("AC", e.getMessage());
+        	Toast.makeText(mContext, "An error occurred while retrieving area data", Toast.LENGTH_SHORT).show();
+          
+        }
+    
+    }
+    
+    private int textToColor(String text)
+    {
+    	if (text.equals("Red")) {
+    		return Color.parseColor("#ffff4444");
+    	} else if (text.equals("Yellow")) {
+    		return Color.parseColor("#ffffbb33");
+    	} else {
+    		return Color.parseColor("#ff99cc00");
+    	}
     }
     
     /**
