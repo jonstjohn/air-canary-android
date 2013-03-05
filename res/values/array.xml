@@ -5,4 +5,24 @@
         <item>Venus</item>
         <item>Earth</item>
     </string-array>
+	<string-array name="site_array">
+        <item>SLC / Davis</item>
+        <item>Cache</item>
+        <item>Duchesne</item>
+        <item>Price</item>
+        <item>Tooele</item>
+        <item>Uintah</item>
+        <item>Washington</item>
+        <item>Weber</item>
+    </string-array>
+	<string-array name="site_ids">
+        <item>slc</item>
+        <item>cache</item>
+        <item>rs</item>
+        <item>p2</item>
+        <item>tooele</item>
+        <item>vl</item>
+        <item>washington</item>
+        <item>weber</item>
+    </string-array>
 </resources>

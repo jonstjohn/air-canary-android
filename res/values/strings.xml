@@ -19,4 +19,5 @@
 	<string name="today_label">Today</string>
 	<string name="tomorrow_label">Tomorrow</string>
 	<string name="dat_label">--</string>
+	
 </resources>

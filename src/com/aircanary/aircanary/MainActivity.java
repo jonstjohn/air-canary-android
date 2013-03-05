@@ -8,13 +8,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -25,7 +24,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
-public class MainActivity extends Activity
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuInflater;
+
+public class MainActivity extends SherlockActivity
 {
 	
     /**
@@ -37,6 +42,8 @@ public class MainActivity extends Activity
      * Context
      */
     private Context mContext;
+    
+    private String code = "slc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,13 +52,43 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main_table);
         
         mContext = this;
-        //SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
-        //        android.R.layout.simple_spinner_dropdown_item);
+        
+        ActionBar actionBar = getSupportActionBar();
+        
+        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(
+        		actionBar.getThemedContext(), R.array.site_array,
+                android.R.layout.simple_spinner_dropdown_item);
         
         //reloadFeatured();
         //reloadSites();
         
-        //ActionBar actionBar = getActionBar();
+        
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        
+        ActionBar.OnNavigationListener mOnNavigationListener = new ActionBar.OnNavigationListener() {
+        	  // Get the same strings provided for the drop-down's ArrayAdapter
+        	  String[] strings = getResources().getStringArray(R.array.site_ids);
+
+        	  @Override
+        	  public boolean onNavigationItemSelected(int position, long itemId) {
+        		  
+        		  code = strings[position];
+        		  Log.w("AC", strings[position]);
+        		  reloadCurrent();
+        		  reloadForecast();
+        	    // Create new fragment from our own Fragment class
+        	    //ListContentFragment newFragment = new ListContentFragment();
+        	    //FragmentTransaction ft = openFragmentTransaction();
+        	    // Replace whatever is in the fragment container with this fragment
+        	    //  and give the fragment a tag name equal to the string at the position selected
+        	    //ft.replace(R.id.fragment_container, newFragment, strings[position]);
+        	    // Apply changes
+        	    //ft.commit();
+        	    return true;
+        	  }
+        	};
+        	
+        actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
         
         //ActionBar.OnNavigationListener mOnNavigationListener = new ActionBar.OnNavigationListener() {
         	  // Get the same strings provided for the drop-down's ArrayAdapter
@@ -80,12 +117,12 @@ public class MainActivity extends Activity
     {
         //TextView tv = (TextView) findViewById(R.id.CurrentPm);
         //tv.setText("--");
-        new GetCurrentJsonTask().execute("slc");
+        new GetCurrentJsonTask().execute(code);
     }
     
     private void reloadForecast()
     {
-    	new GetForecastJsonTask().execute("forecast/slc");
+    	new GetForecastJsonTask().execute("forecast/".concat(code));
     }
     
     private void reloadSites()
@@ -103,7 +140,7 @@ public class MainActivity extends Activity
     {
     	
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
     
